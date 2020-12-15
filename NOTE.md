@@ -116,7 +116,65 @@ Dubbo是一款高性能的Java RPC 框架
    ```text
        基于代码方式配置。这种方式使用比较少，且这种方式适用于自己公司对其框架与Dubbo做深度集成时才会使用。
    ```
-  
+ 
+### Dubbo管理控制台 dubbo-admin
++ 作用：
+     1. 服务管理
+     2. 路由规则
+     3. 动态配置
+     4. 服务降级
+     5. 访问控制
+     6. 权重调整
+     7. 负载均衡
+     8. 管理功能
+     
+### Dubbo配置项说明
++ [dubbo:application(对应org.apache.dubbo.config.ApplicationConfig)](http://dubbo.apache.org/zh/docs/v2.7/user/references/xml/dubbo-application/)
+   ```
+   应用配置:
+      1. name: 应用程序的名称，在dubbo-admin中也可以看到
+      2. owner: 应用程序的负责人
+      3. qosEnable：是否启动QoS，默认true
+      4. qosPort：启动QoS绑定的端口号，默认：22222
+      5. qosAcceptForeignIp：是否允许远程访问，默认：false
+   ```
++ [dubbo:registry(对应org.apache.dubbo.config.RegistryConfig)](http://dubbo.apache.org/zh/docs/v2.7/user/references/xml/dubbo-registry/)
+   ```
+   注册中心配置:
+      1. id: 注册中心id，当当前provider或consumer在多个注册中心时使用。
+             在一些公司，会通过业务线的不同选择不同的注册中心，所以一般都会配置该值。
+      2. address: 当前注册中心的访问地址。
+      3. protocol: 当前注册中心使用的协议，也可以直接写在address中
+      4. timeout: 注册中心请求超时时长，默认：5000，单位：毫秒
+   ```
++ [dubbo:protocol(对应org.apache.dubbo.config.ProtocolConfig)](http://dubbo.apache.org/zh/docs/v2.7/user/references/xml/dubbo-protocol/)
+   ```
+   传输协议配置:
+      1. id: 大公司可能因为各个部门技术栈不同，所以可能会选择使用不同的协议进行交互。
+             在多个协议使用时，指定此值
+      2. name: 指定协议的名称，默认：dubbo
+   ```
++ [dubbo:service(对应org.apache.dubbo.config.ServiceConfig)](http://dubbo.apache.org/zh/docs/v2.7/user/references/xml/dubbo-service/) 或 [dubbo:provider(对应org.apache.dubbo.config.ProviderConfig)](http://dubbo.apache.org/zh/docs/v2.7/user/references/xml/dubbo-provider/)
+   ```
+   服务端的配置:
+      1. interface: 指定当前需要进行对外暴露的接口是什么
+      2. ref: 具体实现对象的引用，使用Spring去进行Bean管理时使用
+      3. version: 对外暴露的版本号。消费者只会根据固定的版本号进行消费
+   ```
++ [dubbo:reference(对应org.apache.dubbo.config.ReferenceConfig)](http://dubbo.apache.org/zh/docs/v2.7/user/references/xml/dubbo-reference/)
+   ```
+   消费者的配置:
+     1. id: 指定该Bean注册到Spring中的id
+     2. interface: 服务接口名
+     3. version: 指定当前服务版本，与服务提供者的版本一致
+     4. registry: 指定所具体使用的注册中心地址，这里是Spring中dubbo:registry中所声明的id
+   ```
++ [dubbo:method(对应org.apache.dubbo.config.MethodConfig)](http://dubbo.apache.org/zh/docs/v2.7/user/references/xml/dubbo-method/)
+  ```
+  方法配置:
+     1. name: 方法名称，用于对这个方法名称的RPC调用进行特殊配置
+     2. async: 是否异步，默认：false
+  ```
 ## Dubbo架构与实战
 Dubbo的架构（调用流程 特性）
 注册中心
