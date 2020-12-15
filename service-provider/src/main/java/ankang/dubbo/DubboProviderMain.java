@@ -27,7 +27,7 @@ public class DubboProviderMain {
 
     @Configuration
     @PropertySource("classpath:/dubbo-provider.properties")
-    @EnableDubbo(scanBasePackages = "ankang.dubbo.service.impl")
+    @EnableDubbo(scanBasePackages = "ankang.dubbo.service.ankang.dubbo.xml.impl")
     static class ProviderConfig {
         @Bean
         public RegistryConfig registryConfig() {

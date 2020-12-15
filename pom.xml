@@ -12,6 +12,7 @@
         <module>server-api</module>
         <module>service-provider</module>
         <module>service-consumer</module>
+        <module>dubbo-xml</module>
     </modules>
     
     <properties>
@@ -59,7 +60,6 @@
                 <artifactId>curator-recipes</artifactId>
                 <version>${curator.version}</version>
             </dependency>
-    
     
             <!-- https://mvnrepository.com/artifact/org.apache.dubbo/dubbo -->
             <dependency>
