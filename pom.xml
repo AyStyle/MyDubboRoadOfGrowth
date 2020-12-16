@@ -13,6 +13,7 @@
         <module>service-provider</module>
         <module>service-consumer</module>
         <module>dubbo-xml</module>
+        <module>java-spi</module>
     </modules>
     
     <properties>
