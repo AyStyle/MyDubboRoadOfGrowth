@@ -1,6 +1,7 @@
 package ankang.dubbo.xml.impl;
 
 import ankang.dubbo.xml.HelloService;
+import lombok.SneakyThrows;
 
 /**
  * @author: ankang
@@ -8,6 +9,7 @@ import ankang.dubbo.xml.HelloService;
  * @create: 2020-12-15
  */
 public class HelloServiceImpl implements HelloService {
+    @SneakyThrows
     @Override
     public String sayHello(String name) {
         return "hello: " + name;

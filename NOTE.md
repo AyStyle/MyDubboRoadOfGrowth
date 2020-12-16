@@ -154,12 +154,14 @@ Dubbo是一款高性能的Java RPC 框架
              在多个协议使用时，指定此值
       2. name: 指定协议的名称，默认：dubbo
    ```
-+ [dubbo:service(对应org.apache.dubbo.config.ServiceConfig)](http://dubbo.apache.org/zh/docs/v2.7/user/references/xml/dubbo-service/) 或 [dubbo:provider(对应org.apache.dubbo.config.ProviderConfig)](http://dubbo.apache.org/zh/docs/v2.7/user/references/xml/dubbo-provider/)
++ [dubbo:service(对应org.apache.dubbo.config.ServiceConfig)](http://dubbo.apache.org/zh/docs/v2.7/user/references/xml/dubbo-service/)
    ```
    服务端的配置:
       1. interface: 指定当前需要进行对外暴露的接口是什么
       2. ref: 具体实现对象的引用，使用Spring去进行Bean管理时使用
       3. version: 对外暴露的版本号。消费者只会根据固定的版本号进行消费
+      4. executes: 服务提供者每服务每方法最大可并行执行请求数，默认：0（不限制）
+                   注意：设置不合理会导致服务阻塞或服务器运行不充分
    ```
 + [dubbo:reference(对应org.apache.dubbo.config.ReferenceConfig)](http://dubbo.apache.org/zh/docs/v2.7/user/references/xml/dubbo-reference/)
    ```
@@ -168,6 +170,12 @@ Dubbo是一款高性能的Java RPC 框架
      2. interface: 服务接口名
      3. version: 指定当前服务版本，与服务提供者的版本一致
      4. registry: 指定所具体使用的注册中心地址，这里是Spring中dubbo:registry中所声明的id
+     5. mock: 服务接口调用失败Mock实现类名，该Mock类必须有一个无参构造函数，与Local的区别在于，Local总是被执行，而Mock只在出现非业务异常(比如超时，网络异常等)时执行，Local在远程调用之前执行，Mock在远程调用后执行。默认：false
+     6. check: 启动时检查提供者是否存在，true报错，false忽略。默认：true
+     7. retries: 远程服务调用重试次数，不包括第一次调用，不需要重试请设为0
+                 注意：提供者是否有幂等性，否则可能出现数据不一致问题
+                 注意：提供者是否有类似缓存机制，如果出现大面积错误时，可能因为重试机制导致雪崩
+                 注意：使用该属性时，不要配置mock，不然不生效
    ```
 + [dubbo:method(对应org.apache.dubbo.config.MethodConfig)](http://dubbo.apache.org/zh/docs/v2.7/user/references/xml/dubbo-method/)
   ```

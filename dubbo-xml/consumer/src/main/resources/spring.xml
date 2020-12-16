@@ -8,11 +8,11 @@
                            http://dubbo.apache.org/schema/dubbo/dubbo.xsd">
     
     <!-- 消费方应用名，用于计算依赖关系，不是匹配条件，不要与提供方一样 -->
-    <dubbo:application name="hello-world-app-consumer"  />
+    <dubbo:application name="hello-world-app-consumer"/>
     
     <!-- 使用multicast广播注册中心暴露发现服务地址 -->
-    <dubbo:registry address="zookeeper://localhost:2181" />
+    <dubbo:registry address="zookeeper://localhost:2181"/>
     
     <!-- 生成远程服务代理，可以和本地bean一样使用demoService -->
-    <dubbo:reference id="helloService" interface="ankang.dubbo.xml.HelloService" />
+    <dubbo:reference id="helloService" check="false" mock="ankang.dubbo.xml.mock.HelloServiceMock" interface="ankang.dubbo.xml.HelloService" timeout="200"/>
 </beans>
