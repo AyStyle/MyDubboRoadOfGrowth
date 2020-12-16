@@ -76,6 +76,8 @@ Dubbo是一款高性能的Java RPC 框架
    
 ### 微服务架构
 
+## Dubbo架构与实战
+
 ### Dubbo处理流程
 + 节点说明：
 
@@ -183,13 +185,6 @@ Dubbo是一款高性能的Java RPC 框架
      1. name: 方法名称，用于对这个方法名称的RPC调用进行特殊配置
      2. async: 是否异步，默认：false
   ```
-## Dubbo架构与实战
-Dubbo的架构（调用流程 特性）
-注册中心
-案例开发（注解和XML）
-Dubbo的管理控制台
-Dubbo的相关配置
-
 ## Dubbo高级应用实战
 SPI 负载均衡
 异步调用
