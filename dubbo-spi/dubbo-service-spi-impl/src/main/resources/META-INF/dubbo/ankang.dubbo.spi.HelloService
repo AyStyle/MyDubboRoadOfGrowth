@@ -1,0 +1,2 @@
+human=ankang.dubbo.spi.impl.HelloServiceImpl
+cat=ankang.dubbo.spi.impl.CatHelloServiceImpl
