@@ -15,6 +15,8 @@
         <module>dubbo-xml</module>
         <module>java-spi</module>
         <module>dubbo-spi</module>
+        <module>dubbo-filter</module>
+        <module>dubbo-balance</module>
     </modules>
     
     <properties>

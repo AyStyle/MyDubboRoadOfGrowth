@@ -1,9 +1,8 @@
 package ankang.dubbo;
 
-import org.apache.curator.framework.CuratorFrameworkFactory;
+import ankang.dubbo.service.impl.service.HelloService;
 import org.apache.dubbo.config.RegistryConfig;
 import org.apache.dubbo.config.spring.context.annotation.EnableDubbo;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,12 +21,15 @@ public class DubboProviderMain {
         final AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(ProviderConfig.class);
 
         context.start();
-        System.in.read();
+
+        while (true) {
+            Thread.yield();
+        }
     }
 
     @Configuration
     @PropertySource("classpath:/dubbo-provider.properties")
-    @EnableDubbo(scanBasePackages = "ankang.dubbo.service.ankang.dubbo.xml.impl")
+    @EnableDubbo(scanBasePackages = "ankang.dubbo.service.impl")
     static class ProviderConfig {
         @Bean
         public RegistryConfig registryConfig() {
