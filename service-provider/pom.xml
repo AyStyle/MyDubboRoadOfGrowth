@@ -12,6 +12,7 @@
     <artifactId>service-provider</artifactId>
     
     <dependencies>
+        
         <dependency>
             <groupId>ankang.dubbo</groupId>
             <artifactId>server-api</artifactId>
@@ -19,7 +20,7 @@
         </dependency>
         <dependency>
             <groupId>ankang.dubbo</groupId>
-            <artifactId>dubbo-filter</artifactId>
+            <artifactId>dubbo-threadpool</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.springframework/spring-context -->

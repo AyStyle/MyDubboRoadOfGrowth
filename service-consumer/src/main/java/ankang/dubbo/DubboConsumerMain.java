@@ -25,7 +25,7 @@ public class DubboConsumerMain {
 
         final HelloService service = context.getBean(HelloService.class);
         while (true) {
-            final String hello = service.sayHello("ankang" , 300);
+            final String hello = service.sayHello("ankang" , 30);
             final Future<Object> future = RpcContext.getContext().getFuture();
 
             System.out.println(String.format("result: %s, future result: %s" , hello , future.get()));
