@@ -6,7 +6,7 @@ import org.apache.dubbo.rpc.Invoker;
 import org.apache.dubbo.rpc.RpcException;
 import org.apache.dubbo.rpc.cluster.LoadBalance;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -17,8 +17,10 @@ import java.util.List;
 public class DubboLoadBalance implements LoadBalance {
     @Override
     public <T> Invoker<T> select(List<Invoker<T>> invokers , URL url , Invocation invocation) throws RpcException {
+        final List<Invoker<T>> list = new ArrayList<>(invokers);
+
         // 按照IP + 端口排序，取第一个
-        Collections.sort(invokers , (i1 , i2) -> {
+        list.sort((i1 , i2) -> {
             int compare = i1.getUrl().getIp().compareToIgnoreCase(i2.getUrl().getIp());
             if (compare == 0) {
                 compare = Integer.compare(i1.getUrl().getPort() , i2.getUrl().getPort());
@@ -27,6 +29,6 @@ public class DubboLoadBalance implements LoadBalance {
             return compare;
         });
 
-        return invokers.get(0);
+        return list.get(0);
     }
 }
