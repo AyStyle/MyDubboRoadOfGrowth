@@ -14,4 +14,14 @@ public class HelloServiceImpl implements HelloService {
     public String sayHello(String name) {
         return "hello: " + name;
     }
+
+    @Override
+    public String sayHello(String name , int timeWait) {
+        final long start = System.currentTimeMillis();
+        while (System.currentTimeMillis() - start < timeWait) {
+            Thread.yield();
+        }
+
+        return "hello: " + name;
+    }
 }

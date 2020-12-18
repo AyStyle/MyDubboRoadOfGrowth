@@ -12,12 +12,15 @@ import org.springframework.stereotype.Component;
 @Component
 public class ConsumerComponent {
 
-    @DubboReference(loadbalance = "onlyFirst")
+    @DubboReference(async = true)
     private HelloService helloService;
 
     public String sayHello(String name) {
         return helloService.sayHello(name);
     }
 
+    public String sayHello(String name , int timeWait) {
+        return helloService.sayHello(name , timeWait);
+    }
 
 }
