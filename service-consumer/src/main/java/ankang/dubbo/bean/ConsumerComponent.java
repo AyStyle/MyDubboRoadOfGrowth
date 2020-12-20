@@ -1,6 +1,6 @@
 package ankang.dubbo.bean;
 
-import ankang.dubbo.service.impl.service.HelloService;
+import ankang.dubbo.service.HelloService;
 import org.apache.dubbo.config.annotation.DubboReference;
 import org.springframework.stereotype.Component;
 

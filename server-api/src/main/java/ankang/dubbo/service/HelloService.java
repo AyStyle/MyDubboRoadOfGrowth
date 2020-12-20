@@ -1,4 +1,4 @@
-package ankang.dubbo.service.impl.service;
+package ankang.dubbo.service;
 
 /**
  * @author: ankang

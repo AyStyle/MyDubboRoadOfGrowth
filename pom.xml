@@ -18,6 +18,7 @@
         <module>dubbo-filter</module>
         <module>dubbo-balance</module>
         <module>dubbo-threadpool</module>
+        <module>dubbo-router</module>
     </modules>
     
     <properties>

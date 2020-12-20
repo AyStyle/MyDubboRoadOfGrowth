@@ -1,6 +1,5 @@
 package ankang.dubbo;
 
-import ankang.dubbo.service.impl.service.HelloService;
 import org.apache.dubbo.config.RegistryConfig;
 import org.apache.dubbo.config.spring.context.annotation.EnableDubbo;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;

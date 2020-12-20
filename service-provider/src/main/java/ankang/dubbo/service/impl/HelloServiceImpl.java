@@ -1,6 +1,6 @@
 package ankang.dubbo.service.impl;
 
-import ankang.dubbo.service.impl.service.HelloService;
+import ankang.dubbo.service.HelloService;
 import org.apache.dubbo.config.annotation.DubboService;
 
 /**
