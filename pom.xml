@@ -19,6 +19,7 @@
         <module>dubbo-balance</module>
         <module>dubbo-threadpool</module>
         <module>dubbo-router</module>
+        <module>homework</module>
     </modules>
     
     <properties>
