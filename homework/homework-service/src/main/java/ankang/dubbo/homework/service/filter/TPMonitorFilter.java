@@ -1,16 +1,21 @@
 package ankang.dubbo.homework.service.filter;
 
+import org.apache.dubbo.common.extension.Activate;
+import org.apache.dubbo.common.extension.Adaptive;
 import org.apache.dubbo.rpc.*;
 
-import java.util.*;
-import java.util.concurrent.*;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author: ankang
  * @email: dreedisgood@qq.com
  * @create: 2020-12-23
  */
+@Activate(group = "provider")
 public class TPMonitorFilter implements Filter {
 
     private final ScheduledThreadPoolExecutor threadPool = new ScheduledThreadPoolExecutor(10);
@@ -22,32 +27,49 @@ public class TPMonitorFilter implements Filter {
 
     public TPMonitorFilter() {
         // 创建一个初始的队列，存储请求的时长
-        requestDurationsList.add(new LinkedList<>());
+        requestDurationsList.addLast(new LinkedList<>());
 
         // 每隔5秒计算一次TP90和TP99
         threadPool.scheduleAtFixedRate(() -> {
             // 创建一个新的队列，新的请求时长都写到这个队列
-            requestDurationsList.add(new LinkedList<>());
+            requestDurationsList.addLast(new LinkedList<>());
+
+            // 近一分钟请求耗时集合
+            final List<Integer> integers = new ArrayList<>(1 << 32);
+            final int batch = requestDurationsList.size();
+            // 如果batch大于12说明已经有了近一分钟的数据
+            if (batch > 12) {
+                // 移除头元素，计算完本次指标之后，后面的指标计算都不会使用这个元素
+                final LinkedList<Integer> first = requestDurationsList.removeFirst();
+                integers.addAll(first);
+            }
+            // batch大于12，则：把剩下的11个集合数据存入
+            // batch小于12，此时不足一分钟，除了最后一个batch，剩下的全部数据都计算
+            for (int i = 0 ; i < (batch > 12 ? 11 : batch - 1) ; i++) {
+                integers.addAll(requestDurationsList.get(i));
+            }
 
             // 计算TP90指标和TP99指标
-            if (requestDurationsList.size() > 12) {
-                final List<LinkedList<Integer>> subList = requestDurationsList.subList(0 , 12);
-                // 移除头元素，之后的指标都不会使用这个元素
-                requestDurationsList.removeFirst();
+            // 将集合转换为数组
+            final Integer[] collect = integers.toArray(new Integer[0]);
 
-                // 逆序排列所有数据
-                final List<Integer> collect = subList.stream().parallel().flatMap(List::stream).sorted((i , j) -> j - i).collect(Collectors.toList());
+            // 计算总请求数、TP90请求数、TP99请求数
+            int totalNum = collect.length;
+            int tp90Num = (int) Math.ceil(totalNum * 0.1);
+            int tp99Num = (int) Math.ceil(totalNum * 0.01);
 
-                // 计算TP90和TP99数据的位置
-                final int tp90Pos = (int) (collect.size() * 0.9);
-                final int tp99Pos = (int) (collect.size() * 0.99);
+            // 计算TP90和TP99数据的位置
+            final int tp90Pos = tp90Num - 1;
+            final int tp99Pos = tp99Num - 1;
 
-                collect.get(tp90Pos);
-                collect.get(tp99Pos);
+            // 逆序排列数据，只排列大于TP90的请求
+            sort(collect , tp90Num , true);
 
-            } else {
+            final int tp90Value = collect[tp90Pos];
+            final int tp99Value = collect[tp99Pos];
 
-            }
+            System.err.println(String.format("TP90监控阈值：%10d，慢请求数：%10d，总请求数：%10d" , tp90Value , tp90Num , totalNum));
+            System.err.println(String.format("TP99监控阈值：%10d，慢请求数：%10d，总请求数：%10d" , tp99Value , tp99Num , totalNum));
         } , 5 , 5 , TimeUnit.SECONDS);
     }
 
@@ -79,13 +101,24 @@ public class TPMonitorFilter implements Filter {
     }
 
     /**
-     * 计算毫秒数对应的{@link this#requestDurationsList}队列位置
+     * 全局排序部分数组，使用选择排序算法
      *
-     * @param milliseconds
-     * @return
+     * @param ints   被排序的数组
+     * @param num    排序元素的个数
+     * @param isDesc 是否降序排序
      */
-    private int calculateRequestDurationsPosition(long milliseconds) {
-        return (int) (milliseconds / 1000 % 60 / 5);
+    private void sort(Integer[] ints , int num , boolean isDesc) {
+        for (int i = 0 ; i < num ; i++) {
+
+            for (int j = i + 1 ; j < ints.length ; j++) {
+                final int out = ints[i];
+                final int in = ints[j];
+                if (out != in) {
+                    ints[i] = isDesc ? Math.max(out , in) : Math.min(out , in);
+                    ints[j] = isDesc ? Math.min(out , in) : Math.max(out , in);
+                }
+            }
+        }
     }
 
 }
