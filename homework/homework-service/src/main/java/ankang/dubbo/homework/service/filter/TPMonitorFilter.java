@@ -1,7 +1,6 @@
 package ankang.dubbo.homework.service.filter;
 
 import org.apache.dubbo.common.extension.Activate;
-import org.apache.dubbo.common.extension.Adaptive;
 import org.apache.dubbo.rpc.*;
 
 import java.util.ArrayList;
